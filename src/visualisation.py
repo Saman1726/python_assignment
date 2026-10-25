@@ -65,7 +65,6 @@ def plot_ideal_functions(session,plot,ideals,max_allowed):
 
 def plot_test_mapping(session,plot,ideals):
     test_mapping = session.query(db.TestMapping).all()
-    test_mapping_label = "Test Data"
     xy1 = {}
     xy2 = {}
     xy3 = {}

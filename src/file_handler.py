@@ -63,16 +63,18 @@ class TestMappingLoader(DataLoader):
     def __init__(self,file_path):
         super().__init__(file_path)
 
-    def save_to_database(self, session):
-        if self.data is None:
-            self.data = self.load_data()
+    def __iter__(self):
+        with open(self.file_path, "r", encoding="utf-8") as file:
+            next(file)
+            yield from file
 
-        for _, row in self.data.iterrows():
-            test_mapping = db.TestMapping(
-                X=row['x'],
-                Y=row['y'],
-                Delta_Y=None,
-                Ideal_Function_Y=None
-            )
-            session.add(test_mapping)
+    def save_to_database(self, session, x, y, delta_y, ideal_function_y):
+        
+        test_mapping = db.TestMapping(
+            X=x,
+            Y=y,
+            Delta_Y=delta_y,
+            Ideal_Function_Y=ideal_function_y
+        )
+        session.add(test_mapping)
         session.commit()
