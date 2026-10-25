@@ -1,0 +1,7 @@
+{
+  "editor.wordBasedSuggestions": "allDocuments",
+  "debug.console.acceptSuggestionOnEnter": "off",
+  "emmet.useInlineCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.languageServer": "Pylance"
+}
