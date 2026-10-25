@@ -34,6 +34,7 @@ class TestMapping(Base):
     Y = db.Column(db.Float, nullable=False)
     Delta_Y = db.Column(db.Float, nullable=True)
     Ideal_Function_Y = db.Column(db.String, nullable=True)
+    Max_Delta = db.Column(db.Float, nullable=True)
 
 Base.metadata.create_all(engine)
 

@@ -66,14 +66,17 @@ def analyse_test_mapping(session, ideals):
     max_delta_y1, max_delta_y2, max_delta_y3, max_delta_y4 = max_delta_y(ideals, session)
 
     for mapping in test_mappings:
-        ideal_functions = session.query(db.IdealFunction).filter(db.IdealFunction.X == mapping.X).all()
-        if not ideal_functions:
+        mapping.Ideal_Function_Y = None
+        mapping.Delta_Y = None
+        mapping.Max_Delta = None
+        ideal_function = session.query(db.IdealFunction).filter(db.IdealFunction.X == mapping.X).first()
+        if not ideal_function:
             continue
         
-        ideal_function_y1 = getattr(ideal_functions[0], f"Y{ideals[0]}")
-        ideal_function_y2 = getattr(ideal_functions[0], f"Y{ideals[1]}")
-        ideal_function_y3 = getattr(ideal_functions[0], f"Y{ideals[2]}")
-        ideal_function_y4 = getattr(ideal_functions[0], f"Y{ideals[3]}")
+        ideal_function_y1 = getattr(ideal_function, f"Y{ideals[0]}")
+        ideal_function_y2 = getattr(ideal_function, f"Y{ideals[1]}")
+        ideal_function_y3 = getattr(ideal_function, f"Y{ideals[2]}")
+        ideal_function_y4 = getattr(ideal_function, f"Y{ideals[3]}")
 
         testing_delta_y1 = abs(mapping.Y - ideal_function_y1)
         testing_delta_y2 = abs(mapping.Y - ideal_function_y2)
@@ -83,17 +86,21 @@ def analyse_test_mapping(session, ideals):
         if testing_delta_y1 <= max_delta_y1 * m_sqrt_2:
             mapping.Delta_Y = testing_delta_y1
             mapping.Ideal_Function_Y = f"Y{ideals[0]}"
+            mapping.Max_Delta = max_delta_y1
         elif testing_delta_y2 <= max_delta_y2 * m_sqrt_2:
             mapping.Delta_Y = testing_delta_y2
             mapping.Ideal_Function_Y = f"Y{ideals[1]}"
+            mapping.Max_Delta = max_delta_y2
         elif testing_delta_y3 <= max_delta_y3 * m_sqrt_2:
             mapping.Delta_Y = testing_delta_y3
             mapping.Ideal_Function_Y = f"Y{ideals[2]}"
+            mapping.Max_Delta = max_delta_y3
         elif testing_delta_y4 <= max_delta_y4 * m_sqrt_2:
             mapping.Delta_Y = testing_delta_y4
             mapping.Ideal_Function_Y = f"Y{ideals[3]}"
+            mapping.Max_Delta = max_delta_y4
     session.commit()
 
-        
+    return (max_delta_y1, max_delta_y2, max_delta_y3, max_delta_y4)
 
             
