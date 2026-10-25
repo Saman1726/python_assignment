@@ -1,1 +1,4 @@
 .venv
+assignment.db
+server.log
+.vscode
