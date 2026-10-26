@@ -1,3 +1,11 @@
+"""
+    file_handler is a module to read files and make them ready to use and save in databse.
+    Functions:
+        Dataloader: is the parent class in this Module. It hass a file_path and load_data function.
+        TrainingDataLoader: is the child class of Dataloader for reading and saving training data.
+        IdealFunctionLoader: is the child class of Dtaloader for reading and saving ideal functions.
+        TestMappingLoader: is child of DataLoader also an iterable class to read the test mappings line by line and also save them to database.
+"""
 import pandas as pd
 import logging
 import database as db
@@ -5,6 +13,7 @@ import database as db
 logger = logging.getLogger(__name__)
 
 class DataLoader:
+    """ Dataloader: is the parent class in this Module. It hass a file_path and load_data function."""
     def __init__(self, file_path):
         self.file_path = file_path
         self.data = None
@@ -24,6 +33,7 @@ class DataLoader:
             raise ValueError(f"Parsing error: {self.file_path} is malformed") from e
 
 class TrainingDataLoader(DataLoader):
+    """ TrainingDataLoader: is the child class of Dataloader for reading and saving training data."""
     def __init__(self, file_path):
         super().__init__(file_path)
 
@@ -44,6 +54,7 @@ class TrainingDataLoader(DataLoader):
         session.commit()
 
 class IdealFunctionLoader(DataLoader):
+    """ IdealFunctionLoader: is the child class of Dtaloader for reading and saving ideal functions."""
     def __init__(self, file_path):
         super().__init__(file_path)
 
@@ -60,6 +71,7 @@ class IdealFunctionLoader(DataLoader):
         session.commit()
 
 class TestMappingLoader(DataLoader):
+    """ TestMappingLoader: is child of DataLoader also an iterable class to read the test mappings line by line and also save them to database."""
     def __init__(self,file_path):
         super().__init__(file_path)
 

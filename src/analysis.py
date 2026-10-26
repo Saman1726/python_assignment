@@ -1,3 +1,15 @@
+""" 
+    Analysis is a module for analys training data and test data. Before using this module, the data 
+    should be loaded and saved in database using file_handler module. 
+
+    Functions:
+        analyse_training_data: this function used to determine ideal Functions for each training dataset
+        analyse_test_mapping: this function used to analys each test pair (x,y) and check if any of ideal functions
+                                of training dataset can be matched to it and then write the test x,y and the ideal function
+                                as well as deviation delta of test y - ideal function y.
+        max_delta_y: is to determine the maximum delta between training dataset and its dedicated ideal function.
+                        it is already used only in this module.
+"""
 import numpy as np
 import database as db
 import file_handler as fh
@@ -6,6 +18,12 @@ import logging
 m_sqrt_2 = np.sqrt(2)
 
 def analyse_training_data(session):
+    """ reads data from database and returns ideal functions for training sets Y1 - Y4
+        return object is a tuple contains 4 items starting with index 0 to 3 for training data
+        Y1 to Y4
+        Input Parameters:
+            session: the actual database session
+    """
     delta_y1_dict = [0]*50
     delta_y2_dict = [0]*50
     delta_y3_dict = [0]*50
@@ -37,6 +55,13 @@ def analyse_training_data(session):
     return (ideal_function_y1, ideal_function_y2, ideal_function_y3, ideal_function_y4)
 
 def max_delta_y(ideals, session):
+    """
+        this function gets ideal functions as input to determine the maximum difference 
+        between training dataset and its dedicated ideal function
+        Input Parameters:
+            ideals: ideal functions from the analyse_training_data()
+            session: the actual database session
+    """
     training_data = session.query(db.TrainingData).all()
     max_delta_y1 = None
     max_delta_y2 = None
@@ -61,6 +86,13 @@ def max_delta_y(ideals, session):
     return max_delta_y1, max_delta_y2, max_delta_y3, max_delta_y4   
 
 def analyse_test_mapping(file_path, ideals, session):
+    """
+        this function is to analys test data according to training datasets and dedicated ideal functions
+        Input Parameters:
+                file_path: path to test file. This file should have 2 columns(x,y) and a header. First column should be the 'x'.
+                ideals: ideal functions from the analyse_training_data()
+                session: the actual database session
+    """
     test_mappings = fh.TestMappingLoader(file_path)
 
     max_delta_y1, max_delta_y2, max_delta_y3, max_delta_y4 = max_delta_y(ideals, session)

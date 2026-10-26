@@ -1,12 +1,22 @@
+"""
+    visualisation module is for visualise the training dataset and its dedicated ideal functions.
+    it also plot the upper and lower bond for each function and also the test data.
+    Functions:
+        plot_data: is the main function that called after analysis to reasemble the results.
+        plot_training_data: gets a plot and a session object to read the data and update plot with this data.
+        plot_ideal_functions: gets a plot and a session object to read the data and update plot with this data.
+        plot_test_mapping: gets a plot and a session object to read the data and update plot with this data.
+
+""" 
 import bokeh.plotting as bp
 from bokeh.models import HoverTool
 import database as db
 import numpy as np
-import logging
 
 m_sqrt_2 = np.sqrt(2)
 
 def plot_data(session,ideals,max_allowed):
+    """ plot_data: is the main function that called after analysis to reasemble the results."""
     bp.output_file("output/training.html")
     plot = bp.figure(title="Training Data", x_axis_label='x axis', y_axis_label='y axis')
     plot.add_tools(HoverTool(tooltips=[("X","@x"),("Y","@y")]))
@@ -16,6 +26,7 @@ def plot_data(session,ideals,max_allowed):
     bp.show(plot)
 
 def plot_training_data(session,plot):
+    """ plot_training_data: gets a plot and a session object to read the data and update plot with this data."""
     training_data = session.query(db.TrainingData).all()
     X = [data.X for data in training_data]
     Y1 = [data.Y1 for data in training_data]
@@ -31,6 +42,7 @@ def plot_training_data(session,plot):
     return plot    
 
 def plot_ideal_functions(session,plot,ideals,max_allowed):
+    """ plot_ideal_functions: gets a plot and a session object to read the data and update plot with this data."""
     ideal_functions_data = session.query(db.IdealFunction).all()
     ideal_x = [data.X for data in ideal_functions_data]
     ideal_y1 = [getattr(data, f"Y{ideals[0]}") for data in ideal_functions_data]
@@ -64,6 +76,7 @@ def plot_ideal_functions(session,plot,ideals,max_allowed):
     return plot
 
 def plot_test_mapping(session,plot,ideals):
+    """ plot_test_mapping: gets a plot and a session object to read the data and update plot with this data."""
     test_mapping = session.query(db.TestMapping).all()
     xy1 = {}
     xy2 = {}
