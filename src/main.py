@@ -1,4 +1,5 @@
 import database as db
+db.init_db
 import logging
 import file_handler as fh
 import analysis as an

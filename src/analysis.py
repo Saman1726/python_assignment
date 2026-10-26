@@ -3,14 +3,13 @@ import database as db
 import file_handler as fh
 import logging
 
-delta_y1_dict = [0]*50
-delta_y2_dict = [0]*50
-delta_y3_dict = [0]*50
-delta_y4_dict = [0]*50
-
 m_sqrt_2 = np.sqrt(2)
 
 def analyse_training_data(session):
+    delta_y1_dict = [0]*50
+    delta_y2_dict = [0]*50
+    delta_y3_dict = [0]*50
+    delta_y4_dict = [0]*50
     training_data = session.query(db.TrainingData).all()
 
     for data in training_data:

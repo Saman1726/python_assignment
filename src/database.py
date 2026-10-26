@@ -2,11 +2,6 @@ import sqlalchemy as db
 import sqlalchemy.orm as orm
 import os
 
-db_path = "assignment.db"
-if os.path.exists(db_path):
-    os.remove(db_path)
-
-engine = db.create_engine(f"sqlite:///{db_path}")
 Base = orm.declarative_base()
 
 class TrainingData(Base):
@@ -34,8 +29,14 @@ class TestMapping(Base):
     Y = db.Column(db.Float, nullable=False)
     Delta_Y = db.Column(db.Float, nullable=True)
     Ideal_Function_Y = db.Column(db.String, nullable=True)
-    Max_Delta = db.Column(db.Float, nullable=True)
 
-Base.metadata.create_all(engine)
+def init_db():
+    db_path = "assignment.db"
+    if os.path.exists(db_path):
+        os.remove(db_path)
+
+    engine = db.create_engine(f"sqlite:///{db_path}")
+    Base.metadata.create_all(engine)
+    return engine
 
        
