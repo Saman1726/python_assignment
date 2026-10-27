@@ -20,7 +20,7 @@ class TestFileHandler(unittest.TestCase):
         tml = fh.TestMappingLoader("dataset/test.csv")
         iterator = iter(tml)
         test_data = next(iterator)
-        self.assertTrue(len(test_data), 1)
+        self.assertEqual(len(test_data), 1)
 
 if __name__=="__main__":
     unittest.main()
